@@ -2,4 +2,4 @@ from flask import Flask
 
 app = Flask(__name__)
 
-from .views import home_page
+from .views import home

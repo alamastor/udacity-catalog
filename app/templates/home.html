@@ -11,9 +11,16 @@
   <main>
     <section>
       <h2>Catagories</h2>
+      <ul>
+        {% for catagory in Catagory.fetch_all() %}
+          <li>{{ catagory.name }}</li>
+        {% endfor %}
+      </ul>
     </section>
     <section>
       <h2>Latest Items</h2>
+      <ul>
+      </ul>
     </section>
   </main>
 </body>
