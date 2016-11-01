@@ -1,11 +1,9 @@
-from sqlalchemy import Column, String
-
 from ..db import db
 
 
 class Catagory(db.Model):
     __tablename__ = 'catagory'
-    name = Column(String(250), primary_key=True)
+    name = db.Column(db.String(250), primary_key=True)
 
     @classmethod
     def create(Cls, name):
@@ -16,4 +14,9 @@ class Catagory(db.Model):
 
     @classmethod
     def fetch_all(Cls):
-        return db.session.query(Cls)
+        return db.session.query(Cls).all()
+
+    @classmethod
+    def exists(Cls, name):
+        q = db.session.query(Cls).filter(Cls.name==name)
+        return db.session.query(q.exists()).one()[0]

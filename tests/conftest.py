@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup
 from app import app
 from app.db import db
 from app.models.catagory import Catagory
+from app.models.item import Item
 
 
 class CustomResponse(Response):
@@ -38,7 +39,7 @@ def test_app(test_db):
 
 
 @pytest.fixture
-def dummy_catagories():
+def dummy_catagories(test_db):
     catagories = [
         'soccer',
         'basketball',
@@ -51,21 +52,28 @@ def dummy_catagories():
 
 
 @pytest.fixture
-def dummy_items():
+def dummy_items(test_db):
     items = [
-        'Stick',
-        'Goggles',
-        'Snowboard',
-        'Shinguards',
-        'Frisbee',
-        'Bat',
-        'Raquette',
-        'Helmet',
-        'Gloves',
-        'Net',
-        'Ball',
-        'Disk',
-        'Boots',
-        'Sock'
+        ('ball', 'soccer'),
+        ('stick', 'basketball'),
+        ('goggles', 'soccer'),
+        ('snowboard', 'soccer'),
+        ('shinguards', 'frisbee'),
+        ('frisbee', 'soccer'),
+        ('bat', 'soccer'),
+        ('raquette', 'soccer'),
+        ('helmet', 'soccer'),
+        ('gloves', 'soccer'),
+        ('net', 'soccer'),
+        ('ball', 'basketball'),
+        ('disk', 'soccer'),
+        ('boots', 'soccer'),
+        ('sock', 'soccer'),
     ]
+    for item in items:
+        if Catagory.exists(item[1]):
+            Item.create(item[0], catagory_name=item[1])
+        else:
+            catagory = Catagory.create(name=item[1])
+            Item.create(item[0], catagory=catagory)
     return items

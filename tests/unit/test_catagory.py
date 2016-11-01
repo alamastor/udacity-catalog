@@ -19,7 +19,7 @@ def test_create_returns_instance(mock_session):
     assert isinstance(Catagory.create('a catagory'), Catagory)
 
 
-def test_create_calls_add_and_commit(mock, mock_session):
+def test_create_calls_add_and_commit(mock_session):
     catagory = Catagory.create('a catagory')
     mock_session.add.assert_called_once_with(catagory)
     mock_session.commit.assert_called_once_with()
@@ -30,5 +30,25 @@ def test_fetch_all_calls_query(mock_session):
     mock_session.query.assert_called_once_with(Catagory)
 
 
-def test_fetch_all_returns_result(mock_session):
-    assert Catagory.fetch_all() == mock_session.query.return_value
+def test_fetch_all_returns_all(mock_session):
+    mock_all = mock_session.query.return_value.all
+    assert Catagory.fetch_all() == mock_all.return_value
+
+
+def test_exists_calls_query_twice(mock, mock_session):
+    Catagory.exists('a catagory')
+    mock_filter = mock_session.query.return_value.filter
+    mock_exists_call = mock_filter.return_value.exists.return_value
+    calls = [mock.call(Catagory), mock.call(mock_exists_call)]
+    assert mock_session.query.call_args_list == calls
+
+
+def test_exists_calls_filter(mock, mock_session):
+    Catagory.exists('a catagory')
+    mock_filter = mock_session.query.return_value.filter
+    mock_filter.assert_called_once_with(mock.ANY)
+
+
+def test_exists_return_one(mock_session):
+    mock_one = mock_session.query.return_value.one
+    assert Catagory.exists('a catagory') == mock_one.return_value[0]

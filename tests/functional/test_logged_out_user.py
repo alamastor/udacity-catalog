@@ -8,4 +8,4 @@ def test_logged_out_user(test_app, dummy_catagories, dummy_items):
     home_page = HomePage(test_app)
     home_page.visit()
     assert home_page.catagories == dummy_catagories
-    assert home_page.items == dummy_items[-10:]
+    assert home_page.items == dummy_items

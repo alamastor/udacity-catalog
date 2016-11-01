@@ -1,6 +1,7 @@
 from flask import url_for
 
 from app.models.catagory import Catagory
+from app.models.item import Item
 
 
 def test_home_page_returns_200(test_app):
@@ -15,15 +16,14 @@ def test_home_page_shows_titles(test_app):
     assert 'Latest Items' in html.find_all('section')[1].h2
 
 
-def test_home_page_shows_catagories(test_app, test_db):
-    catagories = [
-        'soccer',
-        'basketball',
-        'baseball',
-        'frisbee',
-    ]
-    for catagory in catagories:
-        Catagory.create(catagory)
+def test_home_page_shows_catagories(test_app, dummy_catagories):
     html = test_app.get(url_for('home')).html
     catagory_eles = html.find_all('section')[0].ul.find_all('li')
-    assert catagories == [e.text for e in catagory_eles]
+    assert [e.text for e in catagory_eles] == dummy_catagories
+
+
+def test_home_page_shows_items(test_app, dummy_items):
+    html = test_app.get(url_for('home')).html
+    item_eles = html.find_all('section')[1].ul.find_all('li')
+    item_pairs = [tuple(x.text.split(' - ')) for x in item_eles]
+    assert item_pairs == dummy_items
