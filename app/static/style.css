@@ -1,0 +1,34 @@
+html {
+  font-family: 'Raleway', sans-serif;
+}
+
+body {
+  margin: 0;
+  background-color: seashell;
+}
+
+header {
+  padding: 0 2em;
+  background-color: seagreen;
+}
+
+h1 {
+  margin: 0;
+  padding: 1em;
+  color: seashell;
+}
+
+main {
+  display: flex;
+  justify-content: space-between;
+}
+
+section {
+  margin: 0 auto;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  text-transform: capitalize;
+}
