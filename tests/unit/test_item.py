@@ -55,5 +55,12 @@ def test_fetch_all_calls_query(mock_session):
     mock_session.query.assert_called_once_with(Item)
 
 
-def test_fetch_all_returns_result(mock_session):
-    assert Item.fetch_all() == mock_session.query.return_value
+def test_fetch_all_returns_all(mock_session):
+    mock_all = mock_session.query.return_value.all
+    assert Item.fetch_all() == mock_all.return_value
+
+
+def test_fetch_catagory_calls_filter(mock, mock_session):
+    Item.fetch_catagory('soccer')
+    mock_filter = mock_session.query.return_value.filter
+    mock_filter.assert_called_once_with(mock.ANY)

@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+  <section>
+    <h2>Catagories</h2>
+    <ul>
+      {% for catagory in Catagory.fetch_all() %}
+        <li><a href="{{ url_for('catagory', catagory=catagory.name) }}">{{ catagory.name }}</a></li>
+      {% endfor %}
+    </ul>
+  </section>
+  <section>
+    <h2>{{ catagory }} Items</h2>
+    <ul>
+      {% for item in Item.fetch_catagory(catagory) %}
+      <li><a href="/catalog/{{ catagory }}/{{ item.name }}">{{ item.name }}</a></li>
+      {% endfor %}
+    </ul>
+  </section>
+{% endblock %}

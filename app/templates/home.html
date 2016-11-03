@@ -1,33 +1,19 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8" />
-  <title>Catalog App</title>
-  <link href="/static/style.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-</head>
-<body>
-  <header>
-    <h1>Catalog App</h1>
-  </header>
-  <main>
-    <section class="pure-u-1-2">
-      <h2>Catagories</h2>
-      <ul>
-        {% for catagory in Catagory.fetch_all() %}
-          <li>{{ catagory.name }}</li>
-        {% endfor %}
-      </ul>
-    </section>
-    <section class="pure-u-1-2">
-      <h2>Latest Items</h2>
-      <ul>
-        {% for item in Item.fetch_all() %}
-          <li>{{ item.name }} - {{ item.catagory_name }}</li>
-        {% endfor %}
-      </ul>
-    </section>
-  </main>
-</body>
-</html>
+{% extends "base.html" %}
+{% block content %}
+  <section>
+    <h2>Catagories</h2>
+    <ul>
+      {% for catagory in Catagory.fetch_all() %}
+      <li><a href="{{ url_for('catagory', catagory= catagory.name) }}">{{ catagory.name }}</a></li>
+      {% endfor %}
+    </ul>
+  </section>
+  <section class="pure-u-1-2">
+    <h2>Latest Items</h2>
+    <ul>
+      {% for item in Item.fetch_all() %}
+        <li>{{ item.name }} - {{ item.catagory_name }}</li>
+      {% endfor %}
+    </ul>
+  </section>
+{% endblock %}

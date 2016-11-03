@@ -26,4 +26,9 @@ class Item(db.Model):
 
     @classmethod
     def fetch_all(Cls):
-        return db.session.query(Cls)
+        return db.session.query(Cls).all()
+
+    @classmethod
+    def fetch_catagory(Cls, catagory_name):
+        query = db.session.query(Item)
+        return query.filter(Cls.catagory_name==catagory_name).all()

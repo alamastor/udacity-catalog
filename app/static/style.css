@@ -18,6 +18,10 @@ h1 {
   color: seashell;
 }
 
+h2 {
+  text-transform: capitalize;
+}
+
 main {
   display: flex;
   justify-content: space-between;
