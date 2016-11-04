@@ -27,3 +27,8 @@ def test_logged_out_user(test_app, dummy_catagories, dummy_items):
 
     # The description of the item is visible on the page.
     assert current_page.description == dummy_items[0].description
+
+    # User returns to the home page and visits an item from there.
+    current_page = home_page.visit()
+    current_page = ItemPage(test_app, current_page.item_links[1].url).visit()
+    assert current_page.description == dummy_items[1].description

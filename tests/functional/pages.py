@@ -38,7 +38,17 @@ class HomePage(Page):
     @property
     def items(self):
         eles = self.html.find_all('section')[1].ul.find_all('li')
-        return [tuple(e.text.split(' - ')) for e in eles]
+        result = []
+        for ele in eles:
+            item = ele.text.split('-')[0].strip()
+            catagory = ele.text.split('-')[1].strip()
+            result.append((item, catagory))
+        return result
+
+    @property
+    def item_links(self):
+        links = self.html.find_all('section')[1].ul.find_all('a')
+        return [Link(a.text, a['href']) for a in links]
 
 
 class CatagoryPage(Page):

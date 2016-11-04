@@ -20,6 +20,7 @@ h1 {
 
 h2 {
   text-transform: capitalize;
+  width: 80%;
 }
 
 main {
@@ -35,4 +36,17 @@ ul {
   list-style: none;
   padding: 0;
   text-transform: capitalize;
+}
+
+.item-header {
+  margin: 1em 10%;
+}
+
+p {
+  width: 80%;
+  margin: auto 10%;
+}
+
+a {
+  color: seagreen;
 }
