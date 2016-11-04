@@ -55,28 +55,34 @@ def dummy_catagories(test_db):
 
 @pytest.fixture
 def dummy_items(test_db):
-    ItemTuple = namedtuple('Item', ['name', 'catagory'])
+    ItemTuple = namedtuple('Item', ['name', 'catagory', 'description'])
     items = [
-        ItemTuple('ball', 'soccer'),
-        ItemTuple('stick', 'basketball'),
-        ItemTuple('goggles', 'soccer'),
-        ItemTuple('snowboard', 'soccer'),
-        ItemTuple('shinguards', 'frisbee'),
-        ItemTuple('frisbee', 'soccer'),
-        ItemTuple('bat', 'soccer'),
-        ItemTuple('raquette', 'soccer'),
-        ItemTuple('helmet', 'soccer'),
-        ItemTuple('gloves', 'soccer'),
-        ItemTuple('net', 'soccer'),
-        ItemTuple('ball', 'basketball'),
-        ItemTuple('disk', 'soccer'),
-        ItemTuple('boots', 'soccer'),
-        ItemTuple('sock', 'soccer'),
+        ItemTuple('ball', 'soccer', 'a soccer ball'),
+        ItemTuple('stick', 'basketball', 'a basketball stick'),
+        ItemTuple('goggles', 'soccer', ''),
+        ItemTuple('snowboard', 'soccer', ''),
+        ItemTuple('shinguards', 'frisbee', ''),
+        ItemTuple('frisbee', 'soccer', ''),
+        ItemTuple('bat', 'soccer', ''),
+        ItemTuple('raquette', 'soccer', ''),
+        ItemTuple('helmet', 'soccer', ''),
+        ItemTuple('gloves', 'soccer', ''),
+        ItemTuple('net', 'soccer', ''),
+        ItemTuple('ball', 'basketball', ''),
+        ItemTuple('disk', 'soccer', ''),
+        ItemTuple('boots', 'soccer', ''),
+        ItemTuple('sock', 'soccer', ''),
     ]
     for item in items:
         if Catagory.exists(item.catagory):
-            Item.create(item.name, catagory_name=item[1])
+            Item.create(
+                item.name,
+                catagory_name=item[1],
+                description=item.description
+            )
         else:
             catagory = Catagory.create(name=item[1])
-            Item.create(item.name, catagory=catagory)
+            Item.create(
+                item.name, catagory=catagory, description=item.description
+            )
     return items

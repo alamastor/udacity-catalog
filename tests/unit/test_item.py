@@ -18,8 +18,12 @@ def test_create_calls_Item(mock, mock_session, mock_catagory):
     mock_init = mock.patch(
         'app.models.item.Item.__init__', return_value=None
     )
-    Item.create('an item', catagory=mock_catagory)
-    mock_init.assert_called_once_with(name='an item', catagory=mock_catagory)
+    Item.create(
+        'an item', catagory=mock_catagory, description='a description'
+    )
+    mock_init.assert_called_once_with(
+        name='an item', catagory=mock_catagory, description='a description'
+    )
 
 
 def test_create_returns_instance(mock_session, mock_catagory):
@@ -36,9 +40,11 @@ def test_create_uses_catagory_name_arg_when_passed(mock, mock_session):
     mock_init = mock.patch(
         'app.models.item.Item.__init__', return_value=None
     )
-    Item.create('an item', catagory_name='a catagory')
+    Item.create(
+        'an item', catagory_name='a catagory', description='description'
+    )
     mock_init.assert_called_once_with(
-        name='an item', catagory_name='a catagory'
+        name='an item', catagory_name='a catagory', description='description'
     )
 
 
@@ -64,3 +70,15 @@ def test_fetch_catagory_calls_filter(mock, mock_session):
     Item.fetch_catagory('soccer')
     mock_filter = mock_session.query.return_value.filter
     mock_filter.assert_called_once_with(mock.ANY)
+
+
+def test_fetch_by_name_and_catagory_name_calls_filter(mock, mock_session):
+    Item.fetch_by_name_and_catagory_name('ball', 'soccer')
+    mock_filter = mock_session.query.return_value.filter
+    mock_filter.assert_called_once_with(mock.ANY, mock.ANY)
+
+
+def test_fetch_by_name_and_catagory_name_returns_one(mock, mock_session):
+    mock_filter = mock_session.query.return_value.filter
+    mock_one = mock_filter.return_value.one.return_value
+    assert Item.fetch_by_name_and_catagory_name('ball', 'soccer') == mock_one

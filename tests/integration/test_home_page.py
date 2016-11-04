@@ -26,4 +26,4 @@ def test_home_page_shows_items(test_app, dummy_items):
     html = test_app.get(url_for('home')).html
     item_eles = html.find_all('section')[1].ul.find_all('li')
     item_pairs = [tuple(x.text.split(' - ')) for x in item_eles]
-    assert item_pairs == dummy_items
+    assert item_pairs == [(x.name, x.catagory) for x in dummy_items]

@@ -43,9 +43,6 @@ class HomePage(Page):
 
 class CatagoryPage(Page):
 
-    def __init__(self, test_app, url):
-        super().__init__(test_app, url)
-
     @property
     def catagories(self):
         links = self.html.find_all('section')[0].ul.find_all('a')
@@ -55,3 +52,10 @@ class CatagoryPage(Page):
     def items(self):
         links = self.html.find_all('section')[1].ul.find_all('a')
         return [Link(a.text, a['href']) for a in links]
+
+
+class ItemPage(Page):
+
+    @property
+    def description(self):
+        return self.html.p.text
