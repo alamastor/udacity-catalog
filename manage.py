@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
-from flask_script import Manager, Server
+import os
+import binascii
+
+from flask_script import Manager, Server, prompt_bool
 
 from app import app
 app.config.from_pyfile('../debug_config.py')
@@ -59,7 +62,23 @@ DESCRIPTION = (
 
 @manager.command
 def drop_tables():
-    db.drop_all()
+    if prompt_bool('Confirm delete all data?'):
+        db.drop_all()
+
+
+@manager.command
+def generate_secret_key():
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    if not os.path.exists(os.path.join(base_dir, 'instance')):
+        os.makedirs(os.path.join(base_dir, 'instance'))
+    key_file = os.path.join(base_dir, 'instance', 'app_key.py')
+    if not os.path.exists(key_file) or prompt_bool(
+        'Secret key already exists, are you sure you want to delete '
+        'it and create a new one?'
+    ):
+        key = binascii.hexlify(os.urandom(32)).decode('utf-8')
+        with open(key_file, 'w') as w:
+            w.write("SECRET_KEY = '%s'" % key)
 
 
 if __name__ == '__main__':

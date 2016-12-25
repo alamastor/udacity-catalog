@@ -10,6 +10,15 @@
 <body>
   <header>
     <h1>Catalog App</h1>
+    {% if session.get('logged_in') %}
+      <form class="logout-form" action="{{ url_for('logout') }}" method="POST">
+        <button type="submit">Log In</button>
+      </form>
+    {% else %}
+      <form class="login-form" action="{{ url_for('login') }}" method="POST">
+        <button type="submit">Log In</button>
+      </form>
+    {% endif %}
   </header>
   <main>
     {% block content %}

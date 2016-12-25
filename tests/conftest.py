@@ -1,6 +1,6 @@
 from collections import namedtuple
 
-from flask import Response
+from flask import Response, url_for
 import pytest
 from bs4 import BeautifulSoup
 
@@ -86,3 +86,8 @@ def dummy_items(test_db):
                 item.name, catagory=catagory, description=item.description
             )
     return items
+
+
+@pytest.fixture
+def logged_in(test_app):
+    test_app.post(url_for('login'))

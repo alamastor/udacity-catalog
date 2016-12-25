@@ -1,4 +1,4 @@
-from app.views.item import item
+from app.views.item import read_item
 
 
 def test_item_page_calls_render_with_Item(mock):
