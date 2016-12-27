@@ -1,7 +1,7 @@
-from .pages import HomePage, AddItemPage, ItemPage
+from .pages import HomePage, CreateItemPage, ItemPage, EditItemPage
 
 
-def test_create_item(test_app, dummy_catagories, dummy_items):
+def test_edit_item(test_app, dummy_catagories, dummy_items):
     # User visits home page and logs in.
     current_page = HomePage(test_app).visit()
     current_page.login()
@@ -10,7 +10,7 @@ def test_create_item(test_app, dummy_catagories, dummy_items):
     assert current_page.is_logged_in
 
     # User clicks link to add item.
-    current_page = AddItemPage(
+    current_page = CreateItemPage(
         test_app, current_page.add_item_link.url
     ).visit()
 
@@ -20,11 +20,24 @@ def test_create_item(test_app, dummy_catagories, dummy_items):
     current_page.add_item(
         catagory='Soccer',
         name='Corner Flag',
-        description='A flag for a corner.'
+        description='A clag for a forner.'
     )
     assert current_page.response.status_code == 302
     current_page = ItemPage(test_app, current_page.response.location).visit()
     assert current_page.header == 'Corner Flag'
 
     # User decides to edit item.
-    assert 0  # Implement me!
+    edit_item_page = EditItemPage(test_app, current_page.edit_item_link.url)
+    current_page = edit_item_page.visit()
+
+    assert current_page.header.text == 'Edit Item'
+
+    # User submits edit item form and is redirected to the item's page.
+    current_page.edit_item(
+        catagory='Soccer',
+        name='Corner Flag',
+        description='A clag for a forner.'
+    )
+    assert current_page.response.status_code == 302
+    current_page = ItemPage(test_app, current_page.response.location).visit()
+    assert current_page.header == 'Corner Flag'

@@ -104,13 +104,29 @@ class ItemPage(Page):
     def description(self):
         return self.html.p.text
 
+    @property
+    def edit_item_link(self):
+        link = self.html.find('a', class_='edit-item')
+        return Link(link.text, link['href'])
 
-class AddItemPage(Page):
+
+class CreateItemPage(Page):
 
     @property
     def header(self):
         return self.html.find('h2')
 
     def add_item(self, **kwargs):
-        form = self.html.find('form', class_='add-item-form')
+        form = self.html.find('form', class_='item-form')
+        self.submit_form(form, **kwargs)
+
+
+class EditItemPage(Page):
+
+    @property
+    def header(self):
+        return self.html.find('h2')
+
+    def edit_item(self, **kwargs):
+        form = self.html.find('form', class_='item-form')
         self.submit_form(form, **kwargs)

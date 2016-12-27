@@ -47,3 +47,12 @@ class Item(db.Model):
             Cls.name==name, Cls.catagory_name==catagory_name
         )
         return filtered.one()
+
+    def update(self, name=None, catagory_name=None, description=None):
+        if name:
+            self.name = name
+        if catagory_name:
+            self.catagory_name = catagory_name
+        if description:
+            self.description = description
+        db.session.commit()

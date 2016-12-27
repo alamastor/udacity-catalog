@@ -82,3 +82,40 @@ def test_fetch_by_name_and_catagory_name_returns_one(mock, mock_session):
     mock_filter = mock_session.query.return_value.filter
     mock_one = mock_filter.return_value.one.return_value
     assert Item.fetch_by_name_and_catagory_name('ball', 'soccer') == mock_one
+
+
+def test_update_item_with_name_updates_name(mock_session):
+    item = Item()
+    item.name = 'a'
+    item.update(name = 'b')
+    assert item.name == 'b'
+
+
+def test_update_item_with_catagory_name_updates_catagory(mock_session):
+    item = Item()
+    item.catagory_name = 'x'
+    item.update(catagory_name = 'y')
+    assert item.catagory_name == 'y'
+
+
+def test_update_item_with_description_updates_description(mock_session):
+    item = Item()
+    item.description = 'x'
+    item.update(description = 'y')
+    assert item.description == 'y'
+
+
+def test_update_item_leaves_other_fields_intact(mock_session):
+    item = Item()
+    item.name = 'x'
+    item.catagory_name = 'y'
+    item.description = 'z'
+    item.update()
+    assert item.name == 'x'
+    assert item.catagory_name == 'y'
+    assert item.description == 'z'
+
+
+def test_update_calls_commit(mock_session):
+    Item().update()
+    mock_session.commit.assert_called_once_with()

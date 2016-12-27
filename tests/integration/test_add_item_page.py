@@ -6,26 +6,26 @@ from app.models import Catagory, Item
 
 
 def test_logged_out_get_returns_401(test_app):
-    res = test_app.get(url_for('add_item_page'))
+    res = test_app.get(url_for('create_item_page'))
     assert res.status_code == 401
 
 
 def test_get_returns_200(test_app, logged_in):
-    res = test_app.get(url_for('add_item_page'))
+    res = test_app.get(url_for('create_item_page'))
     assert res.status_code == 200
 
 
 def test_page_has_form(test_app, logged_in):
-    res = test_app.get(url_for('add_item_page'))
-    assert res.html.find('form', class_='add-item-form')
+    res = test_app.get(url_for('create_item_page'))
+    assert res.html.find('form', class_='item-form')
 
 
 def test_form_has_all_catagories_in_form(
     test_app, logged_in, dummy_catagories
 ):
     catatgories = [c.name for c in Catagory.fetch_all()]
-    res = test_app.get(url_for('add_item_page'))
-    form = res.html.find('form', class_='add-item-form')
+    res = test_app.get(url_for('create_item_page'))
+    form = res.html.find('form', class_='item-form')
     options = [o['value'] for o in form.find_all('option')]
     assert options == catatgories
 
@@ -35,7 +35,7 @@ def test_logged_out_post_returns_401(test_app):
     assert res.status_code == 401
 
 
-@pytest.mark.use_fixtures('dummy_catagories', 'dummy_items')
+@pytest.mark.usefixtures('dummy_catagories', 'dummy_items')
 def test_post_redirects(test_app, logged_in):
     res = test_app.post(url_for('create_item'), data={
         'name': 'fork', 'catagory': 'cake', 'description': 'a descripticon'
@@ -43,17 +43,17 @@ def test_post_redirects(test_app, logged_in):
     assert res.status_code == 302
 
 
-@pytest.mark.use_fixtures('test_catagories', 'test_items')
+@pytest.mark.usefixtures('dummy_catagories', 'dummy_items')
 def test_post_redirects_to_item_page(test_app, logged_in):
     res = test_app.post(url_for('create_item'), data={
         'name': 'fork', 'catagory': 'cake', 'description': 'a descripticon'
     })
     assert res.location == url_for(
-        'item', item_name='fork', catagory_name='cake', _external=True
+        'read_item', item_name='fork', catagory_name='cake', _external=True
     )
 
 
-@pytest.mark.use_fixtures('test_catagories', 'test_items')
+@pytest.mark.usefixtures('dummy_catagories', 'dummy_items')
 def test_post_adds_to_db(test_app, logged_in):
     test_app.post(url_for('create_item'), data={
         'name': 'fork', 'catagory': 'cake', 'description': 'a descripticon'
@@ -74,7 +74,7 @@ def test_invalid_post_keeps_values_in_input(
     res = test_app.post(url_for('create_item'), data={
         'name': 'f' * 251, 'catagory': 'soccer', 'description': 'a description'
     })
-    form = res.html.find('form', class_='add-item-form')
+    form = res.html.find('form', class_='item-form')
     assert form.find(attrs={'name': 'name'})['value'] == 'f' * 251
     assert form.find(attrs={'name': 'description'}).text == 'a description'
     assert form.find(attrs={'selected': True})['value'] == 'soccer'
