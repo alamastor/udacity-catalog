@@ -10,19 +10,22 @@
 <body>
   <header>
     <h1>Catalog App</h1>
+    <div class="nav-padder"></div>
     {% if session.get('logged_in') %}
       <form class="logout-form" action="{{ url_for('logout') }}" method="POST">
-        <button type="submit">Log In</button>
+        <button class="nav-button" type="submit">Log Out</button>
       </form>
     {% else %}
       <form class="login-form" action="{{ url_for('login') }}" method="POST">
-        <button type="submit">Log In</button>
+        <button class="nav-button" type="submit">Log In</button>
       </form>
     {% endif %}
   </header>
   <main>
-    {% block content %}
-    {% endblock %}
+    <div class="container">
+      {% block content %}
+      {% endblock %}
+    </div>
   </main>
 </body>
 </html>
