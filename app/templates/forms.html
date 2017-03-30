@@ -1,10 +1,19 @@
 {% macro item_form(catagories, values=None, errors=None) -%}
   <form class="item-form" method="POST">
-    <input type="text" name="name" value="{{ values.get('name') }}" /> {% if errors %}
+    <input
+      class="text-input"
+      type="text"
+      name="name"
+      value="{{ values.get('name') }}"
+    />
+    {% if errors %}
       <span class="error">{{ errors['name'] }}</span>
     {% endif %}
-    <textarea name="description">{{ values.get('description') }}</textarea>
-    <select name="catagory">
+    <textarea
+      class="textarea-input"
+      name="description"
+    >{{ values.get('description') }}</textarea>
+    <select class="select-input" name="catagory">
       {% for catagory in catagories %}
           {% if catagory == values.get('catagory') %}
             <option value="{{ catagory }}" selected>{{ catagory }}</option>
@@ -13,6 +22,6 @@
           {% endif %}
       {% endfor %}
     </select>
-    <button type="submit">Submit</button>
+    <button class="button-input" type="submit">Submit</button>
   </form>
 {%- endmacro %}

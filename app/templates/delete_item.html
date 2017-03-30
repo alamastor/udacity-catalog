@@ -1,7 +1,13 @@
 {% extends "base.html" %}
 {% block content %}
-  <h2>Delete Item</h2>
-  <form class="delete-item-form" action="{{ url_for('delete_item', item_name=item_name, catagory_name=catagory_name) }}" method="POST">
-    <button type="submit">Confirm Delete</button>
-  </form>
+  <section>
+    <h2>Delete Item</h2>
+    <form
+      class="delete-item-form"
+      action="{{ url_for('delete_item', item_name=item_name, catagory_name=catagory_name) }}"
+      method="POST"
+    >
+      <button class="button-input" type="submit">Confirm Delete</button>
+    </form>
+  </section>
 {% endblock %}

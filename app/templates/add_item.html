@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 {% block content %}
-  <h2>Add Item</h2>
-  {% from 'forms.html' import item_form %}
-  {{ item_form(catagories, values=values, errors=errors) }}
+  <section>
+    <h2>Add Item</h2>
+    {% from 'forms.html' import item_form %}
+    {{ item_form(catagories, values=values, errors=errors) }}
+  </section>
 {% endblock %}

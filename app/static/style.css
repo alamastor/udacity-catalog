@@ -4,12 +4,30 @@ html {
 
 body {
   margin: 0;
-  background-color: seashell;
+  background-color: white;
 }
 
 header {
-  padding: 0 2em;
+  padding: 0;
   background-color: seagreen;
+  display: flex;
+}
+
+.nav-padder {
+  margin-left: auto;
+}
+
+.nav-button {
+  height: 100%;
+  margin: auto 2rem;
+  border: none;
+  background-color: seagreen;
+  color: seashell;
+  font-size: 1rem;
+}
+.nav-button:hover {
+  color: darkolivegreen;
+  cursor: pointer;
 }
 
 h1 {
@@ -21,15 +39,24 @@ h1 {
 h2 {
   text-transform: capitalize;
   width: 80%;
+  margin: 0;
 }
 
 main {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.container {
   display: flex;
   justify-content: space-between;
 }
 
 section {
-  margin: 0 auto;
+  background-color: seashell;
+  margin: 2rem;
+  width: 100%;
+  padding: 1rem;
 }
 
 ul {
@@ -38,15 +65,43 @@ ul {
   text-transform: capitalize;
 }
 
-.item-header {
-  margin: 1em 10%;
-}
-
-p {
-  width: 80%;
-  margin: auto 10%;
-}
-
 a {
   color: seagreen;
+}
+
+.text-input {
+  display: block;
+  margin: 0.5rem 0;
+  font-size: 1.3rem;
+}
+
+.textarea-input {
+  display: block;
+  border-color: lightgray;
+  max-width: 100%;
+  width: 100%;
+  height: 20rem;
+  margin: 0.5rem 0;
+  box-sizing: border-box;
+  font-size: 1.3rem;
+  resize: none;
+}
+
+.select-input {
+  display: block;
+  margin: 0.5rem 0;
+  font-size: 1.3rem;
+  text-transform: capitalize;
+}
+
+.button-input {
+  display: block;
+  margin-top: 1rem;
+  font-size: 1.3rem;
+  border: none;
+  background-color: lightgray;
+}
+.button-input:hover {
+  background-color: gray;
+  cursor: pointer;
 }
