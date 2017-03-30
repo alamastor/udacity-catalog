@@ -1,6 +1,6 @@
 from collections import namedtuple
 
-from flask import url_for
+from flask import url_for, session
 
 
 class Page(object):
@@ -44,7 +44,9 @@ class Page(object):
             return False
 
     def login(self):
-        return self.submit_form(self.login_form)
+        with self.test_app.session_transaction() as sess:
+            sess['logged_in'] = True
+        return self.visit()
 
 
 Link = namedtuple('Link', ['text', 'url'])

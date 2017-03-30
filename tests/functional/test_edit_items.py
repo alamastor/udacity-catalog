@@ -11,7 +11,6 @@ def test_edit_item(test_app, dummy_catagories, dummy_items):
     # User visits home page and logs in.
     current_page = HomePage(test_app).visit()
     current_page.login()
-    assert current_page.response.status_code == 302
     current_page = HomePage(test_app).visit()
     assert current_page.is_logged_in
 
