@@ -4,7 +4,8 @@
     <h2 class="item-header">{{ item.name }}</h2>
     <p>{{ item.description }}</p>
     {% if session.get('logged_in', False) %}
-      <a class="edit-item" href="{{ url_for("update_item", item_name=item.name, catagory_name=item.catagory_name) }}">Edit Item</a>
+      <a class="edit-item" href="{{ url_for("update_item_page", item_name=item.name, catagory_name=item.catagory_name) }}">Edit Item</a>
+      <a class="delete-item" href="{{ url_for("delete_item_page", item_name=item.name, catagory_name=item.catagory_name) }}">Delete Item</a>
     {% endif %}
   </section>
 {% endblock %}

@@ -39,3 +39,19 @@ def test_logged_in_has_edit_link(test_app, dummy_items, logged_in):
         'read_item', item_name=item.name, catagory_name=item.catagory
     ))
     assert res.html.find('a', class_='edit-item')
+
+
+def test_logged_out_doesnt_have_delete_link(test_app, dummy_items):
+    item = dummy_items[0]
+    res = test_app.get(url_for(
+        'read_item', item_name=item.name, catagory_name=item.catagory
+    ))
+    assert not res.html.find('a', class_='delete-item')
+
+
+def test_logged_in_has_delete_link(test_app, dummy_items, logged_in):
+    item = dummy_items[0]
+    res = test_app.get(url_for(
+        'read_item', item_name=item.name, catagory_name=item.catagory
+    ))
+    assert res.html.find('a', class_='delete-item')

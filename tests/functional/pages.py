@@ -109,6 +109,11 @@ class ItemPage(Page):
         link = self.html.find('a', class_='edit-item')
         return Link(link.text, link['href'])
 
+    @property
+    def delete_item_link(self):
+        link = self.html.find('a', class_='delete-item')
+        return Link(link.text, link['href'])
+
 
 class CreateItemPage(Page):
 
@@ -130,3 +135,14 @@ class EditItemPage(Page):
     def edit_item(self, **kwargs):
         form = self.html.find('form', class_='item-form')
         self.submit_form(form, **kwargs)
+
+
+class DeleteItemPage(Page):
+
+    @property
+    def header(self):
+        return self.html.find('h2')
+
+    def confirm_delete(self):
+        form = self.html.find('form', class_='delete-item-form')
+        self.submit_form(form)

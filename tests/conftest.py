@@ -91,3 +91,8 @@ def dummy_items(test_db):
 @pytest.fixture
 def logged_in(test_app):
     test_app.post(url_for('login'))
+
+
+@pytest.fixture
+def dummy_item(dummy_items):
+    return dummy_items[0]

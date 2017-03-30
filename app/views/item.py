@@ -1,6 +1,5 @@
 from flask import render_template, request, redirect, url_for, abort
-from sqlalchemy.orm.exc import NoResultFound
-
+from sqlalchemy.orm.exc import NoResultFound 
 from app import app
 from app.models import Item, Catagory
 from app.auth import login_required
@@ -72,3 +71,22 @@ def update_item(item_name, catagory_name):
     return redirect(url_for(
         'read_item', item_name=new_item_name, catagory_name=new_catagory_name
     ))
+
+
+@app.route('/catalog/<catagory_name>/<item_name>/delete')
+@login_required
+def delete_item_page(item_name, catagory_name):
+    return render_template(
+        'delete_item.html', item_name=item_name, catagory_name=catagory_name
+    )
+
+
+@app.route('/catalog/<catagory_name>/<item_name>/delete', methods=['POST'])
+@login_required
+def delete_item(item_name, catagory_name):
+    try:
+        item = Item.fetch_by_name_and_catagory_name(item_name, catagory_name)
+    except NoResultFound:
+        abort(404)
+    item.delete()
+    return redirect(url_for('home'))

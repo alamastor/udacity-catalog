@@ -1,4 +1,10 @@
-from .pages import HomePage, CreateItemPage, ItemPage, EditItemPage
+from sqlalchemy.orm.exc import NoResultFound
+import pytest
+
+from .pages import (
+    HomePage, CreateItemPage, ItemPage, EditItemPage, DeleteItemPage
+)
+from app.models import Item
 
 
 def test_edit_item(test_app, dummy_catagories, dummy_items):
@@ -41,3 +47,21 @@ def test_edit_item(test_app, dummy_catagories, dummy_items):
     assert current_page.response.status_code == 302
     current_page = ItemPage(test_app, current_page.response.location).visit()
     assert current_page.header == 'Corner Flag'
+
+    # User decides to delete item.
+    current_page = delete_item_page = DeleteItemPage(
+        test_app, current_page.delete_item_link.url
+    ).visit()
+
+    assert current_page.header.text == 'Delete Item'
+
+    # User clicks the confirm delete buttom and is redirected to
+    # home page.
+    current_page.confirm_delete()
+    assert current_page.response.status_code == 302
+    current_page = ItemPage(test_app, current_page.response.location).visit()
+    sections = current_page.html.find_all('h2')
+    assert sections[0].text == 'Catagories'
+    assert sections[1].text == 'Latest Items'
+    with pytest.raises(NoResultFound):
+        Item.fetch_by_name_and_catagory_name('Corner Flag', 'Soccer')
