@@ -6,19 +6,26 @@
   <link href="/static/style.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="/static/auth.js"></script>
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
+  <meta name="google-signin-client_id" content="{{ google_id }}">
+  <meta name="login-url" content="{{ url_for('login', _external=True) }}">
+  <meta name="logout-url" content="{{ url_for('logout', _external=True) }}">
 </head>
 <body>
   <header>
     <h1>Catalog App</h1>
     <div class="nav-padder"></div>
     {% if session.get('logged_in') %}
-      <form class="logout-form" action="{{ url_for('logout') }}" method="POST">
-        <button class="nav-button" type="submit">Log Out</button>
-      </form>
+      <button
+        id="logout-button"
+        class="nav-button"
+        type="submit"
+      >
+        Log Out
+      </button>
     {% else %}
-      <form class="login-form" action="{{ url_for('login') }}" method="POST">
-        <button class="nav-button" type="submit">Log In</button>
-      </form>
+      <button class="nav-button g-signin2"  type="submit" data-onsuccess="onSignIn">Log In</button>
     {% endif %}
   </header>
   <main>

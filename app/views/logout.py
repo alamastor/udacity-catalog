@@ -1,6 +1,9 @@
+from flask import session
+
 from app import app
 
 
-@app.route('/logout')
+@app.route('/logout', methods=['POST'])
 def logout():
-    pass
+    session['logged_in'] = False
+    return '', 204

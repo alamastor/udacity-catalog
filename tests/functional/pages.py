@@ -33,12 +33,8 @@ class Page(object):
         return self
 
     @property
-    def login_form(self):
-        return self.html.find('form', class_='login-form')
-
-    @property
     def is_logged_in(self):
-        if self.html.find('form', class_='logout-form'):
+        if self.html.find('button', id='logout-button'):
             return True
         else:
             return False

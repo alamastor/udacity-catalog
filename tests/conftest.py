@@ -90,7 +90,8 @@ def dummy_items(test_db):
 
 @pytest.fixture
 def logged_in(test_app):
-    test_app.post(url_for('login'))
+    with test_app.session_transaction() as sess:
+        sess['logged_in'] = True
 
 
 @pytest.fixture
