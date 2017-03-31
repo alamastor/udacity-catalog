@@ -8,10 +8,7 @@
       {% endfor %}
     </ul>
   </section>
-  <section class="pure-u-1-2">
-    {% if session.get('logged_in', False) %}
-      <a href="{{ url_for('create_item_page') }}" class="add-item">Add Item</a>
-    {% endif %}
+  <section>
     <h2>Latest Items</h2>
     <ul>
       {% for item in Item.fetch_all() %}
@@ -21,5 +18,10 @@
       </li>
       {% endfor %}
     </ul>
+    {% if session.get('logged_in', False) %}
+      <a class="add-item-button" href="{{ url_for('create_item_page') }}">
+        Add Item
+      </a>
+    {% endif %}
   </section>
 {% endblock %}

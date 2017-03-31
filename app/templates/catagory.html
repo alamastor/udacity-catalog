@@ -15,5 +15,10 @@
       <li><a href="/catalog/{{ catagory }}/{{ item.name }}">{{ item.name }}</a></li>
       {% endfor %}
     </ul>
+    {% if session.get('logged_in', False) %}
+      <a class="add-item-button" href="{{ url_for('create_item_page') }}">
+        Add Item
+      </a>
+    {% endif %}
   </section>
 {% endblock %}

@@ -64,6 +64,11 @@ section {
   width: 100%;
   padding: 1rem;
 }
+@media screen and (max-width: 450px) {
+  section {
+    margin: 2rem 0;
+  }
+}
 
 ul {
   list-style: none;
@@ -110,4 +115,8 @@ a {
 .button-input:hover {
   background-color: gray;
   cursor: pointer;
+}
+
+.add-item-button {
+  font-size: 1.5rem;
 }
