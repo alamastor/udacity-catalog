@@ -1,6 +1,6 @@
 from flask import render_template, request, redirect, url_for, abort
 from sqlalchemy.orm.exc import NoResultFound 
-from app import app
+from ..app import app
 from app.models import Item, Catagory
 from app.auth import login_required
 

@@ -1,7 +1,7 @@
 from flask import session, request
 from oauth2client import client, crypt
 
-from app import app
+from ..app import app
 
 
 @app.route('/login', methods=['POST'])

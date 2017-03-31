@@ -1,6 +1,6 @@
 from flask import session
 
-from app import app
+from ..app import app
 
 
 @app.route('/logout', methods=['POST'])
