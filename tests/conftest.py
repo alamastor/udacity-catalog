@@ -8,6 +8,7 @@ from app import app
 from app.db import db
 from app.models.catagory import Catagory
 from app.models.item import Item
+from app.csrf import generate_csrf_token
 
 
 class CustomResponse(Response):
@@ -98,3 +99,11 @@ def logged_in(test_app):
 @pytest.fixture
 def dummy_item(dummy_items):
     return dummy_items[0]
+
+
+@pytest.fixture
+def csrf_token(test_app):
+    with test_app.session_transaction() as sess:
+        token = generate_csrf_token()
+        sess['_csrf_token'] = token
+    return token

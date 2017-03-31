@@ -48,30 +48,39 @@ def test_edit_item_shows_old_data(test_app, dummy_items, logged_in):
     assert item.description in res.data.decode()
 
 
-def test_post_form_returns_401_logged_out(test_app, dummy_items):
+def test_post_form_returns_401_logged_out(test_app, dummy_items, csrf_token):
     item = dummy_items[0]
-    res = test_app.post(url_for(
-        'update_item', item_name=item.name, catagory_name=item.catagory
-    ))
+    res = test_app.post(
+        url_for(
+            'update_item', item_name=item.name, catagory_name=item.catagory
+        ),
+        data={'_csrf_token': csrf_token}
+    )
     assert res.status_code == 401
 
 
-def test_post_form_redirects(test_app, dummy_items, logged_in):
+def test_post_form_redirects(test_app, dummy_items, logged_in, csrf_token):
     item = dummy_items[0]
     res = test_app.post(url_for(
         'update_item', item_name=item.name, catagory_name=item.catagory
     ), data={
-        'name': 'fork', 'catagory': 'soccer', 'description': 'a descripticon'
+        'name': 'fork',
+        'catagory': 'soccer',
+        'description': 'a descripticon',
+        '_csrf_token': csrf_token
     })
     assert res.status_code == 302
 
 
-def test_post_redirects_to_item_page(test_app, logged_in, dummy_items):
+def test_post_redirects_to_item_page(test_app, logged_in, dummy_items, csrf_token):
     item = dummy_items[0]
     res = test_app.post(url_for(
         'update_item', item_name=item.name, catagory_name=item.catagory
     ), data={
-        'name': 'fork', 'catagory': 'basketball', 'description': 'a descript'
+        'name': 'fork',
+        'catagory': 'basketball',
+        'description': 'a descript',
+        '_csrf_token': csrf_token
     })
     assert res.location == url_for(
         'read_item',
@@ -81,21 +90,24 @@ def test_post_redirects_to_item_page(test_app, logged_in, dummy_items):
     )
 
 
-def test_post_form_updates_item(test_app, dummy_items, logged_in):
+def test_post_form_updates_item(test_app, dummy_items, logged_in, csrf_token):
     item_tuple = dummy_items[0]
     test_app.post(url_for(
         'update_item',
         item_name=item_tuple.name,
         catagory_name=item_tuple.catagory
     ), data={
-        'name': 'fork', 'catagory': 'soccer', 'description': 'a new description'
+        'name': 'fork',
+        'catagory': 'soccer',
+        'description': 'a new description',
+        '_csrf_token': csrf_token
     })
     item = Item.fetch_by_name_and_catagory_name('fork', 'soccer')
     assert item.description == 'a new description'
 
 
 def test_post_page_returns_404_if_items_does_not_exist(
-    test_app, logged_in, dummy_catagories
+    test_app, logged_in, dummy_catagories, csrf_token
 ):
     catagory = dummy_catagories[0]
     res = test_app.post(url_for(
@@ -103,31 +115,43 @@ def test_post_page_returns_404_if_items_does_not_exist(
         item_name='non item',
         catagory_name=catagory
     ), data={
-        'name': 'fork', 'catagory': 'cake', 'description': 'a new description'
+        'name': 'fork',
+        'catagory': 'cake',
+        'description': 'a new description',
+        '_csrf_token': csrf_token
     })
+    assert res.status_code == 404
 
 
-def test_invalid_name_show_validation_error(test_app, logged_in, dummy_items):
-    item = dummy_items[0]
-    res = test_app.post(
-        url_for(
-            'update_item', item_name=item.name, catagory_name=item.catagory
-        ), data={
-            'name': 'f' * 251, 'catagory': 'cake', 'description': 'a descripticon'
-        }
-    )
-    assert res.html.find(class_='error').text
-
-
-def test_invalid_post_keeps_values_in_input(
-    test_app, logged_in, dummy_items
+def test_invalid_name_show_validation_error(
+    test_app, logged_in, dummy_items, csrf_token
 ):
     item = dummy_items[0]
     res = test_app.post(
         url_for(
             'update_item', item_name=item.name, catagory_name=item.catagory
         ), data={
-            'name': 'f' * 251, 'catagory': 'soccer', 'description': 'a descripticon'
+            'name': 'f' * 251,
+            'catagory': 'cake',
+            'description': 'a descripticon',
+            '_csrf_token': csrf_token
+        }
+    )
+    assert res.html.find(class_='error').text
+
+
+def test_invalid_post_keeps_values_in_input(
+    test_app, logged_in, dummy_items, csrf_token
+):
+    item = dummy_items[0]
+    res = test_app.post(
+        url_for(
+            'update_item', item_name=item.name, catagory_name=item.catagory
+        ), data={
+            'name': 'f' * 251,
+            'catagory': 'soccer',
+            'description': 'a descripticon',
+            '_csrf_token': csrf_token
         }
     )
     form = res.html.find('form', class_='item-form')

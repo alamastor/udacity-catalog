@@ -23,8 +23,12 @@ class Page(object):
 
     def submit_form(self, form, **kwargs):
         url = form.get('action', self.url)
+        data = kwargs
+        data['_csrf_token'] = self.html.find(
+            'input', {'name': '_csrf_token'}
+        ).attrs['value']
         response = self.test_app.post(
-            url, headers={'referer': self.url}, data=kwargs
+            url, headers={'referer': self.url}, data=data
         )
         status = response.status_code
         if status >= 400 and status < 500:

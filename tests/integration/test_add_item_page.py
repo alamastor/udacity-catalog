@@ -29,23 +29,31 @@ def test_form_has_all_catagories_in_form(
     assert options == catatgories
 
 
-def test_logged_out_post_returns_401(test_app):
-    res = test_app.post(url_for('create_item'))
+def test_logged_out_post_returns_401(test_app, csrf_token):
+    res = test_app.post(
+        url_for('create_item'), data={'_csrf_token': csrf_token}
+    )
     assert res.status_code == 401
 
 
 @pytest.mark.usefixtures('dummy_catagories', 'dummy_items')
-def test_post_redirects(test_app, logged_in):
+def test_post_redirects(test_app, logged_in, csrf_token):
     res = test_app.post(url_for('create_item'), data={
-        'name': 'fork', 'catagory': 'soccer', 'description': 'a descripticon'
+        'name': 'fork',
+        'catagory': 'soccer',
+        'description': 'a descripticon',
+        '_csrf_token': csrf_token
     })
     assert res.status_code == 302
 
 
 @pytest.mark.usefixtures('dummy_catagories', 'dummy_items')
-def test_post_redirects_to_item_page(test_app, logged_in):
+def test_post_redirects_to_item_page(test_app, logged_in, csrf_token):
     res = test_app.post(url_for('create_item'), data={
-        'name': 'fork', 'catagory': 'soccer', 'description': 'a descripticon'
+        'name': 'fork',
+        'catagory': 'soccer',
+        'description': 'a descripticon',
+        '_csrf_token': csrf_token,
     })
     assert res.location == url_for(
         'read_item', item_name='fork', catagory_name='soccer', _external=True
@@ -53,25 +61,35 @@ def test_post_redirects_to_item_page(test_app, logged_in):
 
 
 @pytest.mark.usefixtures('dummy_catagories', 'dummy_items')
-def test_post_adds_to_db(test_app, logged_in):
+def test_post_adds_to_db(test_app, logged_in, csrf_token):
     test_app.post(url_for('create_item'), data={
-        'name': 'fork', 'catagory': 'soccer', 'description': 'a descripticon'
+        'name': 'fork', 
+        'catagory': 'soccer',
+        'description': 'a descripticon',
+        '_csrf_token': csrf_token
     })
     item = Item.fetch_by_name_and_catagory_name('fork', 'soccer')
     assert item.description == 'a descripticon'
 
 
-def test_invalid_name_show_validation_error(test_app, logged_in):
+def test_invalid_name_show_validation_error(test_app, logged_in, csrf_token):
     res = test_app.post(url_for('create_item'), data={
-        'name': 'f' * 251, 'catagory': 'cake', 'description': 'a descripticon'
+        'name': 'f' * 251,
+        'catagory': 'cake',
+        'description': 'a descripticon',
+        '_csrf_token': csrf_token
     })
     assert res.html.find(class_='error').text
 
+
 def test_invalid_post_keeps_values_in_input(
-    test_app, logged_in, dummy_catagories
+    test_app, logged_in, dummy_catagories, csrf_token
 ):
     res = test_app.post(url_for('create_item'), data={
-        'name': 'f' * 251, 'catagory': 'soccer', 'description': 'a description'
+        'name': 'f' * 251, 
+        'catagory': 'soccer',
+        'description': 'a description',
+        '_csrf_token': csrf_token
     })
     form = res.html.find('form', class_='item-form')
     assert form.find(attrs={'name': 'name'})['value'] == 'f' * 251
