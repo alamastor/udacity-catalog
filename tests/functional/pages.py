@@ -75,7 +75,7 @@ class HomePage(Page):
 
     @property
     def add_item_link(self):
-        link = self.html.find('a', class_='add-item')
+        link = self.html.find('a', class_='add-item-button')
         return Link(link.text, link['href'])
 
 
