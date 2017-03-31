@@ -24,14 +24,9 @@ def create_item():
     name = request.form['name']
     catagory = request.form['catagory']
     description = request.form['description']
-
-    max_name_length = Item.name.property.columns[0].type.length
-    if len(name) > max_name_length:
+    errors = form_errors(request.form)
+    if errors:
         catagories = [c.name for c in Catagory.fetch_all()]
-        errors = {'name': (
-            'Name must be no more than %i '
-            'characters long.' % max_name_length
-        )}
         values = {
             'name': name, 'catagory': catagory, 'description': description
         }
@@ -50,19 +45,43 @@ def create_item():
 @app.route('/catalog/<catagory_name>/<item_name>/edit')
 @login_required
 def update_item_page(item_name, catagory_name):
-    return render_template('edit_item.html', values={})
+    item = Item.fetch_by_name_and_catagory_name(item_name, catagory_name)
+    catagories = [c.name for c in Catagory.fetch_all()]
+    return render_template(
+        'edit_item.html',
+        catagories=catagories,
+        values={
+            'name': item.name,
+            'catagory': item.catagory_name,
+            'description': item.description
+        },
+    )
 
 
 @app.route('/catalog/<catagory_name>/<item_name>/edit', methods=['POST'])
 @login_required
 def update_item(item_name, catagory_name):
-    new_item_name = request.form.get('name')
-    new_catagory_name = request.form.get('catagory')
-    new_description = request.form.get('description')
     try:
         item = Item.fetch_by_name_and_catagory_name(item_name, catagory_name)
     except NoResultFound:
         abort(404)
+    errors = form_errors(request.form)
+    new_item_name = request.form.get('name')
+    new_catagory_name = request.form.get('catagory')
+    new_description = request.form.get('description')
+    if errors:
+        values = {
+            'name': new_item_name,
+            'catagory': new_catagory_name,
+            'description': new_description
+        }
+        catagories = [c.name for c in Catagory.fetch_all()]
+        return render_template(
+            'add_item.html',
+            catagories=catagories,
+            values=values,
+            errors=errors
+        )
     item.update(
         name=new_item_name,
         catagory_name=new_catagory_name,
@@ -90,3 +109,19 @@ def delete_item(item_name, catagory_name):
         abort(404)
     item.delete()
     return redirect(url_for('home'))
+
+
+def form_errors(form):
+    errors = {}
+    max_name_length = Item.name.property.columns[0].type.length
+    if not form.get('name', None):
+        errors['name'] = 'Please enter a name.'
+    elif len(form['name']) > max_name_length:
+        errors['name'] = (
+            'Name must be less than %s characters.' % max_name_length
+        )
+    if not Catagory.exists(form.get('catagory', None)):
+        errors['catagory'] = 'Not a valid catagory.'
+    if not form.get('description', None):
+        errors['description'] = 'Please enter a description.'
+    return errors 

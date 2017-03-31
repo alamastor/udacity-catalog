@@ -49,7 +49,8 @@ def dummy_catagories(test_db):
         'frisbee',
     ]
     for catagory in catagories:
-        Catagory.create(catagory)
+        if not Catagory.exists(catagory):
+            Catagory.create(catagory)
     return catagories
 
 

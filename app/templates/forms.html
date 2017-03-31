@@ -4,7 +4,7 @@
       class="text-input"
       type="text"
       name="name"
-      value="{{ values.get('name') }}"
+      value="{{ values.get('name', '') }}"
     />
     {% if errors %}
       <span class="error">{{ errors['name'] }}</span>
@@ -12,7 +12,10 @@
     <textarea
       class="textarea-input"
       name="description"
-    >{{ values.get('description') }}</textarea>
+    >{{ values.get('description', '') }}</textarea>
+    {% if errors %}
+      <span class="error">{{ errors['description'] }}</span>
+    {% endif %}
     <select class="select-input" name="catagory">
       {% for catagory in catagories %}
           {% if catagory == values.get('catagory') %}
@@ -22,6 +25,9 @@
           {% endif %}
       {% endfor %}
     </select>
+    {% if errors %}
+      <span class="error">{{ errors['catagory'] }}</span>
+    {% endif %}
     <button class="button-input" type="submit">Submit</button>
   </form>
 {%- endmacro %}

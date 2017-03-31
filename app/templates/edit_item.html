@@ -3,6 +3,6 @@
   <section>
     <h2>Edit Item</h2>
     {% import 'forms.html' as forms %}
-    {{ forms.item_form(values=values, errors=errors) }}
+    {{ forms.item_form(catagories, values=values, errors=errors) }}
   </section>
 {% endblock %}

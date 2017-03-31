@@ -1,5 +1,4 @@
 import pytest
-
 from flask import url_for
 
 from app.models import Catagory, Item
@@ -38,7 +37,7 @@ def test_logged_out_post_returns_401(test_app):
 @pytest.mark.usefixtures('dummy_catagories', 'dummy_items')
 def test_post_redirects(test_app, logged_in):
     res = test_app.post(url_for('create_item'), data={
-        'name': 'fork', 'catagory': 'cake', 'description': 'a descripticon'
+        'name': 'fork', 'catagory': 'soccer', 'description': 'a descripticon'
     })
     assert res.status_code == 302
 
@@ -46,19 +45,19 @@ def test_post_redirects(test_app, logged_in):
 @pytest.mark.usefixtures('dummy_catagories', 'dummy_items')
 def test_post_redirects_to_item_page(test_app, logged_in):
     res = test_app.post(url_for('create_item'), data={
-        'name': 'fork', 'catagory': 'cake', 'description': 'a descripticon'
+        'name': 'fork', 'catagory': 'soccer', 'description': 'a descripticon'
     })
     assert res.location == url_for(
-        'read_item', item_name='fork', catagory_name='cake', _external=True
+        'read_item', item_name='fork', catagory_name='soccer', _external=True
     )
 
 
 @pytest.mark.usefixtures('dummy_catagories', 'dummy_items')
 def test_post_adds_to_db(test_app, logged_in):
     test_app.post(url_for('create_item'), data={
-        'name': 'fork', 'catagory': 'cake', 'description': 'a descripticon'
+        'name': 'fork', 'catagory': 'soccer', 'description': 'a descripticon'
     })
-    item = Item.fetch_by_name_and_catagory_name('fork', 'cake')
+    item = Item.fetch_by_name_and_catagory_name('fork', 'soccer')
     assert item.description == 'a descripticon'
 
 

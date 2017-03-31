@@ -7,7 +7,7 @@ def test_catagory_page_returns_200(test_app, dummy_catagories):
 
 def test_page_shows_titles(test_app):
     html = test_app.get(url_for('catagory', catagory='soccer')).html
-    assert 'Catalog App' == html.h1.text
+    assert 'Catalog App' == html.a.text
     assert 'Catagories' == html.find_all('section')[0].h2.text
     assert 'soccer Items' == html.find_all('section')[1].h2.text
 
