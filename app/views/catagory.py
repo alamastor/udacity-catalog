@@ -5,11 +5,11 @@ from ..models.catagory import Catagory
 from ..models.item import Item
 
 
-@app.route('/catalog/<catagory>/items')
-def catagory(catagory):
+@app.route('/catalog/<catagory_name>/items')
+def catagory(catagory_name):
     return render_template(
         'catagory.html',
         Catagory=Catagory,
-        catagory=catagory,
+        catagory=catagory_name,
         Item=Item
     )

@@ -4,7 +4,7 @@
     <h2>Catagories</h2>
     <ul>
       {% for catagory in Catagory.fetch_all() %}
-      <li><a href="{{ url_for('catagory', catagory=catagory.name) }}">{{ catagory.name }}</a></li>
+      <li><a href="{{ url_for('catagory', catagory_name=catagory.name) }}">{{ catagory.name }}</a></li>
       {% endfor %}
     </ul>
   </section>

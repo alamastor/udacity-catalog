@@ -26,10 +26,6 @@ def test_create_calls_Item(mock, mock_session, mock_catagory):
     )
 
 
-def test_create_returns_instance(mock_session, mock_catagory):
-    assert isinstance(Item.create('an item', catagory=mock_catagory), Item)
-
-
 def test_create_calls_add_and_commit(mock, mock_session, mock_catagory):
     item = Item.create('an item')
     mock_session.add.assert_called_once_with(item)
@@ -44,7 +40,7 @@ def test_create_uses_catagory_name_arg_when_passed(mock, mock_session):
         'an item', catagory_name='a catagory', description='description'
     )
     mock_init.assert_called_once_with(
-        name='an item', catagory_name='a catagory', description='description'
+        name='an item', catagory=mock.ANY, description='description'
     )
 
 
@@ -66,18 +62,6 @@ def test_fetch_all_returns_all(mock_session):
     assert Item.fetch_all() == mock_all.return_value
 
 
-def test_fetch_catagory_calls_filter(mock, mock_session):
-    Item.fetch_catagory('soccer')
-    mock_filter = mock_session.query.return_value.filter
-    mock_filter.assert_called_once_with(mock.ANY)
-
-
-def test_fetch_by_name_and_catagory_name_calls_filter(mock, mock_session):
-    Item.fetch_by_name_and_catagory_name('ball', 'soccer')
-    mock_filter = mock_session.query.return_value.filter
-    mock_filter.assert_called_once_with(mock.ANY, mock.ANY)
-
-
 def test_fetch_by_name_and_catagory_name_returns_one(mock, mock_session):
     mock_filter = mock_session.query.return_value.filter
     mock_one = mock_filter.return_value.one.return_value
@@ -91,13 +75,6 @@ def test_update_item_with_name_updates_name(mock_session):
     assert item.name == 'b'
 
 
-def test_update_item_with_catagory_name_updates_catagory(mock_session):
-    item = Item()
-    item.catagory_name = 'x'
-    item.update(catagory_name = 'y')
-    assert item.catagory_name == 'y'
-
-
 def test_update_item_with_description_updates_description(mock_session):
     item = Item()
     item.description = 'x'
@@ -105,17 +82,19 @@ def test_update_item_with_description_updates_description(mock_session):
     assert item.description == 'y'
 
 
-def test_update_item_leaves_other_fields_intact(mock_session):
-    item = Item()
-    item.name = 'x'
-    item.catagory_name = 'y'
-    item.description = 'z'
-    item.update()
-    assert item.name == 'x'
-    assert item.catagory_name == 'y'
-    assert item.description == 'z'
-
-
 def test_update_calls_commit(mock_session):
     Item().update()
     mock_session.commit.assert_called_once_with()
+
+
+def test_dict(mock_session):
+    item = Item()
+    item.name = 'x'
+    item.catagory_id = 2
+    item.description = 'z'
+    assert item.dict == {
+        'id': None,
+        'catagory_id': 2,
+        'name': 'x',
+        'description': 'z'
+    }

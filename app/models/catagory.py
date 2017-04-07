@@ -3,7 +3,18 @@ from ..db import db
 
 class Catagory(db.Model):
     __tablename__ = 'catagory'
-    name = db.Column(db.String(250), primary_key=True)
+    id = db.Column(db.Integer(), primary_key=True)
+    name = db.Column(db.String(250), nullable=True, unique=True)
+    items = db.relationship('Item')
+
+    @property
+    def dict(self):
+        items = self.items
+        return {
+            'id': self.id,
+            'name': self.name,
+            'items': [item.dict for item in items],
+        }
 
     @classmethod
     def create(Cls, name):

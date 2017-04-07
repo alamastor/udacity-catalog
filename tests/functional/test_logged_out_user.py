@@ -16,11 +16,11 @@ def test_logged_out_user(test_app, dummy_catagories, dummy_items):
     current_page = catagory_page.visit()
 
     # Catagories are still visible.
-    assert [c.text for c in current_page.catagories] == dummy_catagories
+    assert [c.text.strip() for c in current_page.catagories] == dummy_catagories
 
     # Items are visible for just that catagory.
     items = [i.name for i in dummy_items if i.catagory == catagory.text]
-    assert [i.text for i in current_page.items] == items
+    assert [i.text.strip() for i in current_page.items] == items
 
     # User clicks a link to an item.
     current_page = ItemPage(test_app, current_page.items[0].url).visit()

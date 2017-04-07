@@ -1,6 +1,7 @@
 import pytest
 
 from app.models.catagory import Catagory
+from app.models.item import Item
 
 
 @pytest.fixture
@@ -52,3 +53,16 @@ def test_exists_calls_filter(mock, mock_session):
 def test_exists_return_one(mock_session):
     mock_one = mock_session.query.return_value.one
     assert Catagory.exists('a catagory') == mock_one.return_value[0]
+
+
+def test_dict(mock_session):
+    catagory = Catagory(name='cat')
+    item = Item(name='x', catagory_id=catagory.id, description='z')
+    catagory.items = [item]
+    assert catagory.dict == {
+        'id': None,
+        'name': 'cat',
+        'items': [
+            item.dict
+        ]
+    }
