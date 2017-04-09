@@ -30,5 +30,5 @@ def generate_csrf_token():
 
 @app.context_processor
 def inject_csrf_token():
-    ""Inject CSRF token function into every template render."""
+    """Inject CSRF token function into every template render."""
     return {'csrf_token': generate_csrf_token}
