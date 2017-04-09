@@ -16,13 +16,15 @@ A basic CRUD app for managing items in a catalog.
     source venv/bin/activate
     pip install -r requirements.txt
     ```
-
-3. Run project in debug mode.
+3. Project set up:
     ```bash
     python manage.py generate_key
     cp example_google_auth.py instance/google_auth.py
     python manage.py create_tables
     python manage.py populate
+    ```
+4. Run project in debug mode.
+    ```bash
     python manage.py runserver
     ```
 ## Notes
