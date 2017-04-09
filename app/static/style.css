@@ -124,3 +124,7 @@ a {
 .add-item-button {
   font-size: 1.5rem;
 }
+
+.delete-item {
+  text-transform: capitalize;
+}

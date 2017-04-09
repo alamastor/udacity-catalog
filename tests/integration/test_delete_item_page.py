@@ -22,6 +22,16 @@ def test_delete_item_page_200(test_app, logged_in, dummy_item):
     ))
     assert res.status_code == 200
 
+def test_delete_page_has_item_name(test_app, logged_in, dummy_item):
+    res = test_app.get(url_for(
+        'delete_item_page',
+        item_name=dummy_item.name,
+        catagory_name=dummy_item.catagory
+    ))
+    item_text = res.html.h3.text
+    assert dummy_item.name in item_text
+    assert dummy_item.catagory in item_text
+
 
 def test_delete_has_form(test_app, logged_in, dummy_item):
     res = test_app.get(url_for(
