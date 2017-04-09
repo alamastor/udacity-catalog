@@ -1,3 +1,4 @@
+"""Item endpoints."""
 from flask import render_template, request, redirect, url_for, abort
 from sqlalchemy.orm.exc import NoResultFound 
 from ..app import app
@@ -7,6 +8,7 @@ from app.auth import login_required
 
 @app.route('/catalog/<catagory_name>/<item_name>')
 def read_item(item_name, catagory_name):
+    """Endpoint to display individual item."""
     item = Item.fetch_by_name_and_catagory_name(item_name, catagory_name)
     return render_template('item.html', item=item)
 
@@ -14,6 +16,7 @@ def read_item(item_name, catagory_name):
 @app.route('/catalog/create_item')
 @login_required
 def create_item_page():
+    """Endpoint to display create item page."""
     catagories = [c.name for c in Catagory.fetch_all()]
     return render_template('add_item.html', catagories=catagories, values={})
 
@@ -21,6 +24,10 @@ def create_item_page():
 @app.route('/catalog/create_item', methods=['POST'])
 @login_required
 def create_item():
+    """Post endpoint to create an item. If form is invalid will return create
+    item page with errors displayed, otherwise create item and redirect to
+    item page.
+    """
     name = request.form['name']
     catagory = request.form['catagory']
     description = request.form['description']
@@ -45,6 +52,7 @@ def create_item():
 @app.route('/catalog/<catagory_name>/<item_name>/edit')
 @login_required
 def update_item_page(item_name, catagory_name):
+    """Endpoint to display update item page."""
     item = Item.fetch_by_name_and_catagory_name(item_name, catagory_name)
     catagories = [c.name for c in Catagory.fetch_all()]
     return render_template(
@@ -61,6 +69,10 @@ def update_item_page(item_name, catagory_name):
 @app.route('/catalog/<catagory_name>/<item_name>/edit', methods=['POST'])
 @login_required
 def update_item(item_name, catagory_name):
+    """Post endpoint to update an item. If form is invalid will return create
+    item page with errors displayed, otherwise update item and redirect to
+    item page.
+    """
     try:
         item = Item.fetch_by_name_and_catagory_name(item_name, catagory_name)
     except NoResultFound:
@@ -95,6 +107,7 @@ def update_item(item_name, catagory_name):
 @app.route('/catalog/<catagory_name>/<item_name>/delete')
 @login_required
 def delete_item_page(item_name, catagory_name):
+    """Endpoint to display confirm delete item page."""
     return render_template(
         'delete_item.html', item_name=item_name, catagory_name=catagory_name
     )
@@ -103,6 +116,7 @@ def delete_item_page(item_name, catagory_name):
 @app.route('/catalog/<catagory_name>/<item_name>/delete', methods=['POST'])
 @login_required
 def delete_item(item_name, catagory_name):
+    """Post endpoint to delete item. Redirects to home."""
     try:
         item = Item.fetch_by_name_and_catagory_name(item_name, catagory_name)
     except NoResultFound:
@@ -112,6 +126,8 @@ def delete_item(item_name, catagory_name):
 
 
 def form_errors(form):
+    """Return dict containing form validation errors for create / update item.
+    """
     errors = {}
     max_name_length = Item.name.property.columns[0].type.length
     if not form.get('name', None):

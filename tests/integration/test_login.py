@@ -7,27 +7,27 @@ def test_home_page_has_login_button(test_app):
 
 
 def test_post_to_login_page_returns_204(test_app, mock, csrf_token):
-    mock.patch('app.views.login.verify_token', return_value=True)
+    mock.patch('app.views.auth.verify_token', return_value=True)
     res = test_app.post(url_for('login'), data={'_csrf_token': csrf_token})
     assert res.status_code == 204
 
 
 def test_invalid_post_to_login_page_returns_401(test_app, mock, csrf_token):
-    mock.patch('app.views.login.verify_token', return_value=False)
+    mock.patch('app.views.auth.verify_token', return_value=False)
     res = test_app.post(url_for('login'), data={'_csrf_token': csrf_token})
     assert res.status_code == 401
 
 
 def test_post_to_login_with_valid_token_logs_user_in(test_app, mock, csrf_token):
     assert not session.get('logged_in', False)
-    mock.patch('app.views.login.verify_token', return_value=True)
+    mock.patch('app.views.auth.verify_token', return_value=True)
     res = test_app.post(url_for('login'), data={'_csrf_token': csrf_token})
     assert session['logged_in']
 
 
 def test_post_to_login_with_invalid_token_doesnt_log_user_in(test_app, mock):
     assert not session.get('logged_in', False)
-    mock.patch('app.views.login.verify_token', return_value=False)
+    mock.patch('app.views.auth.verify_token', return_value=False)
     res = test_app.post(url_for('login'))
     assert not session.get('logged_in', False)
 

@@ -1,3 +1,5 @@
+"""Set up app."""
+
 from flask import Flask, session
 
 app = Flask(__name__, instance_relative_config=True)
@@ -13,7 +15,7 @@ def inject_google_id():
     return {'google_id': app.config['GOOGLE_CLIENT_ID']}
 
 
-from .views import home, catagory, item, login, logout, api
+from .views import home, catagory, item, auth, api
 from .db import db
 db.init_app(app)
 from . import csrf
