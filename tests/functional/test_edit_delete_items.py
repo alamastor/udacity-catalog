@@ -7,7 +7,7 @@ from .pages import (
 from app.models import Item
 
 
-def test_edit_item(test_app, dummy_catagories, dummy_items):
+def test_edit_item(test_app, dummy_items):
     # User visits home page and logs in.
     current_page = HomePage(test_app).visit()
     current_page.login()
