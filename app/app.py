@@ -2,6 +2,7 @@ from flask import Flask, session
 
 app = Flask(__name__, instance_relative_config=True)
 
+app.config.from_object('config') # load config.py
 app.config.from_pyfile('app_key.py')  # load instance/app_key.py
 app.config.from_pyfile('google_auth.py')  # load instance/google_auth.py
 
