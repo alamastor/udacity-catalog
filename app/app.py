@@ -27,7 +27,7 @@ def inject_google_id():
     return {'google_id': app.config['GOOGLE_CLIENT_ID']}
 
 
-from .views import home, catagory, item, auth, api
+from .views import home, catagory, item, auth, api, errors
 from .db import db
 db.init_app(app)
 from . import csrf
