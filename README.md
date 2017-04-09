@@ -27,3 +27,8 @@ A basic CRUD app for managing items in a catalog.
 ## Notes
 - Data can be accessed in JSON format at /api.
 - instance/google_auth.py must exist and contain GOOGLE_CLIENT_ID and GOOGLE_SECRET, example_google_auth.py can be used, or a new ones can be generated at https://developers.google.com/identity/sign-in/web/.
+- Run tests:
+    ```bash
+    cd /path/to/project
+    source venv/bin/activate
+    pytest tests
