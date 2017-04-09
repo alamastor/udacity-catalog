@@ -16,8 +16,8 @@ try:
     app.config.from_pyfile('google_auth.py')  # load instance/google_auth.py
 except FileNotFoundError:
     warnings.warn(
-        'Running without Google auth keys add GOOGLE_CLIENT_ID and GOOGLE_SECRET'
-        'to instance/google_auth.py.'
+        'Running without Google auth keys add GOOGLE_CLIENT_ID and '
+        'GOOGLE_SECRET to instance/google_auth.py.'
     )
 
 
