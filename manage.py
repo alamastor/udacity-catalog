@@ -79,6 +79,7 @@ def generate_key():
         key = binascii.hexlify(os.urandom(32)).decode('utf-8')
         with open(key_file, 'w') as w:
             w.write("SECRET_KEY = '%s'" % key)
+        print('created secret key at %s' % key_file)
 
 
 if __name__ == '__main__':

@@ -12,6 +12,7 @@ A basic CRUD app for managing items in a catalog.
 2. Setup virtual environment:
     ```bash
     cd /path/to/project
+    virtualenv venv
     source venv/bin/activate
     pip install -r requirements.txt
     ```
