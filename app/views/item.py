@@ -13,7 +13,7 @@ def read_item(item_name, catagory_name):
     return render_template('item.html', item=item)
 
 
-@app.route('/catalog/create_item')
+@app.route('/catalog/item/create')
 @login_required
 def create_item_page():
     """Endpoint to display create item page."""
@@ -21,7 +21,7 @@ def create_item_page():
     return render_template('add_item.html', catagories=catagories, values={})
 
 
-@app.route('/catalog/create_item', methods=['POST'])
+@app.route('/catalog/item/create', methods=['POST'])
 @login_required
 def create_item():
     """Post endpoint to create an item. If form is invalid will return create
