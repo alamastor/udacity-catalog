@@ -1,4 +1,5 @@
 from collections import namedtuple
+import os
 
 from flask import Response, url_for
 import pytest
@@ -18,13 +19,13 @@ class CustomResponse(Response):
         return BeautifulSoup(self.data.decode('utf-8'), 'html.parser')
 
 
+@pytest.fixture
 def setup_db(scope='session'):
-    yield
-    os.remove(app.config['DB_FILE'])
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite://'  # In memory db.
 
 
 @pytest.fixture
-def test_db():
+def test_db(setup_db):
     db.create_all()
     yield
     db.drop_all()
