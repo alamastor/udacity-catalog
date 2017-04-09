@@ -25,6 +25,15 @@ def test_item_page_shows_description(test_app, dummy_items):
     assert description == item.description
 
 
+def test_item_page_shows_catagory(test_app, dummy_items):
+    item = dummy_items[0]
+    res = test_app.get(url_for(
+        'read_item', item_name=item.name, catagory_name=item.catagory
+    ))
+    catagory = res.html.h3.text
+    assert catagory == item.catagory
+
+
 def test_logged_out_doesnt_have_edit_link(test_app, dummy_items):
     item = dummy_items[0]
     res = test_app.get(url_for(
