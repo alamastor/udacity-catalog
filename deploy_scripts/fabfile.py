@@ -13,7 +13,7 @@ def deploy():
 
 def _make_dirs(site_dir):
     if not exists(site_dir + '/instance'):
-        run(f'mkdir -p {site_dir + '/instance'}')
+        run(f'mkdir -p {site_dir}/instance'}')
 
 
 def _get_latest_source(site_dir):
