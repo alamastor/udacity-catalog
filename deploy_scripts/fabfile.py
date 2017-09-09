@@ -6,14 +6,14 @@ REPO_URL = 'git@github.com:alamastor/udacity-catalog.git'
 
 def deploy():
     site_dir = f'~/sites/{env.host}'
-    _make_site_dir(site_dir)
+    _make_dirs(site_dir)
     _get_latest_source(site_dir)
     _update_virtualenv(site_dir)
 
 
-def _make_site_dir(site_dir):
-    if not exists(site_dir):
-        run(f'mkdir -p {site_dir}')
+def _make_dirs(site_dir):
+    if not exists(site_dir + '/instance'):
+        run(f'mkdir -p {site_dir + '/instance'}')
 
 
 def _get_latest_source(site_dir):
