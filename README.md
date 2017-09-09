@@ -2,7 +2,7 @@
 A basic CRUD app for managing items in a catalog.
 
 ## Requirements
-- Python 3.4+
+- Python 3.6+
 ## Running project
 1. Install Python 3 pip and virtualenv on Ubuntu:
     ```bash
