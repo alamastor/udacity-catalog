@@ -35,3 +35,4 @@ A basic CRUD app for managing items in a catalog.
     cd /path/to/project
     source venv/bin/activate
     pytest tests
+    ```
